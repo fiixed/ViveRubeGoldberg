@@ -14,8 +14,11 @@ public class ControllerInputManager: MonoBehaviour {
     public LayerMask laserMask;
     public float yNudgeAmount = 1f;
 
-	// Use this for initialization
-	void Start () {
+    // Grab & Throw
+    private float throwforce = 1.5f;
+
+    // Use this for initialization
+    void Start () {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
         laser = GetComponentInChildren<LineRenderer>();
 	}
@@ -54,7 +57,29 @@ public class ControllerInputManager: MonoBehaviour {
             }
         }
     }
-        
 
-        
+    private void OnTriggerStay(Collider other) {
+        if (other.gameObject.CompareTag("Throwable")) {
+            if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) {
+                ThowObject(other);
+            } else if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger)) {
+                GrabObject(other);
+            }
+        }
+    }
+
+    private void GrabObject(Collider other) {
+        other.transform.SetParent(transform);
+        other.GetComponent<Rigidbody>().isKinematic = true;
+        device.TriggerHapticPulse(2000);
+    }
+
+    private void ThowObject(Collider other) {
+        other.transform.SetParent(null);
+        Rigidbody rb = other.GetComponent<Rigidbody>();
+        rb.isKinematic = false;
+        rb.velocity = device.velocity * throwforce;
+        rb.angularVelocity = device.angularVelocity;
+    }
+
 }
