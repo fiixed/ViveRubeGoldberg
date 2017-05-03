@@ -107,7 +107,7 @@ public class ControllerInputManager: MonoBehaviour {
     }
 
     private void OnTriggerStay(Collider other) {
-        if (other.gameObject.CompareTag("Throwable")) {
+        if (other.gameObject.CompareTag("Throwable")  || other.gameObject.CompareTag("Structure")) {
             if (device.GetPressUp(SteamVR_Controller.ButtonMask.Trigger)) {
                 ThowObject(other);
             } else if (device.GetPressDown(SteamVR_Controller.ButtonMask.Trigger)) {
@@ -125,9 +125,13 @@ public class ControllerInputManager: MonoBehaviour {
     private void ThowObject(Collider other) {
         other.transform.SetParent(null);
         Rigidbody rb = other.GetComponent<Rigidbody>();
-        rb.isKinematic = false;
-        rb.velocity = device.velocity * throwforce;
-        rb.angularVelocity = device.angularVelocity;
+        
+        if (other.gameObject.CompareTag("Throwable")) {
+            rb.isKinematic = false;
+            rb.velocity = device.velocity * throwforce;
+            rb.angularVelocity = device.angularVelocity;
+        }
+        
     }
 
     private void SwipeLeft() {
