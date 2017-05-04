@@ -37,6 +37,9 @@ public class ControllerInputManager: MonoBehaviour {
         device = SteamVR_Controller.Input((int)trackedObj.index);
 
         if (device == SteamVR_Controller.Input(SteamVR_Controller.GetDeviceIndex(SteamVR_Controller.DeviceRelation.Rightmost))) {
+            laser.gameObject.SetActive(true);
+            laser.SetPosition(0, transform.position);
+            laser.SetPosition(1, transform.forward * 1.5f + transform.position);
             if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Touchpad)) {
                 touchLast = device.GetAxis(Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad).x;
             }
@@ -69,8 +72,10 @@ public class ControllerInputManager: MonoBehaviour {
                 touchLast = 0;
                 hasSwipedRight = false;
                 hasSwipedLeft = false;
+               
             }
             if (device.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad)) {
+                
                 SpawnObject();
             }
         }

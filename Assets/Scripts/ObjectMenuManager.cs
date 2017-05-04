@@ -13,9 +13,22 @@ public class ObjectMenuManager : MonoBehaviour {
         //foreach (Transform child in transform) {
         //    objectList.Add(child.gameObject);
         //}
+        objectList[currentObject].transform.rotation = Quaternion.identity;
 	}
-	
-	public void MenuLeft() {
+
+    private void LateUpdate() {
+        if (objectMenuUI[currentObject].gameObject.name == "Plank") {
+            objectList[currentObject].transform.rotation = Quaternion.identity;
+        } else if (objectMenuUI[currentObject].gameObject.name == "Goal" ||
+            objectMenuUI[currentObject].gameObject.name == "Trampoline") {
+            objectList[currentObject].transform.rotation = Quaternion.Euler(-90, 0, 0);
+        } else if (objectMenuUI[currentObject].gameObject.name == "Funnel") {
+            objectList[currentObject].transform.rotation = Quaternion.Euler(90, 0, 0);
+        }
+
+    }
+
+    public void MenuLeft() {
         objectMenuUI[currentObject].SetActive(false);
         currentObject--;
         if (currentObject < 0) {
