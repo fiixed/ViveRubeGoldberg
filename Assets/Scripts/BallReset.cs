@@ -20,9 +20,16 @@ public class BallReset : MonoBehaviour {
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
+
+        if (collision.gameObject.CompareTag("Collectible")) {
+            Destroy(collision.gameObject);
+        }
+
     }
 
     
-	
-	
+
+
+
+
 }
